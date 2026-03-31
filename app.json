@@ -14,14 +14,17 @@
       "backgroundColor": "#000000"
     },
     "ios": {
+      "bundleIdentifier": "com.simdanlabs.teleprompter",
       "supportsTablet": true,
       "infoPlist": {
         "NSCameraUsageDescription": "This app needs camera access to show the teleprompter overlay on your camera feed.",
         "NSMicrophoneUsageDescription": "This app needs microphone access to record video with audio.",
-        "NSPhotoLibraryUsageDescription": "This app needs photo library access to save your recordings."
+        "NSPhotoLibraryUsageDescription": "This app needs photo library access to save your recordings.",
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
+      "package": "com.simdanlabs.teleprompter",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#000000"
@@ -30,7 +33,16 @@
         "CAMERA",
         "RECORD_AUDIO",
         "READ_EXTERNAL_STORAGE",
-        "WRITE_EXTERNAL_STORAGE"
+        "WRITE_EXTERNAL_STORAGE",
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.READ_MEDIA_VISUAL_USER_SELECTED",
+        "android.permission.ACCESS_MEDIA_LOCATION",
+        "android.permission.READ_MEDIA_IMAGES",
+        "android.permission.READ_MEDIA_VIDEO",
+        "android.permission.READ_MEDIA_AUDIO"
       ]
     },
     "web": {
@@ -55,6 +67,12 @@
         }
       ],
       "expo-video"
-    ]
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "08feeef0-d4f6-4e6e-98d3-670d9b1a914a"
+      }
+    }
   }
 }
