@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0a0a"/>
+      <stop offset="100%" style="stop-color:#1a1a2e"/>
+    </linearGradient>
+    <linearGradient id="lensGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4dabf7"/>
+      <stop offset="100%" style="stop-color:#339af0"/>
+    </linearGradient>
+    <linearGradient id="lineGrad1" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#4dabf7;stop-opacity:0.3"/>
+      <stop offset="50%" style="stop-color:#4dabf7;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#4dabf7;stop-opacity:0.3"/>
+    </linearGradient>
+    <linearGradient id="lineGrad2" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#4dabf7;stop-opacity:0.15"/>
+      <stop offset="50%" style="stop-color:#4dabf7;stop-opacity:0.5"/>
+      <stop offset="100%" style="stop-color:#4dabf7;stop-opacity:0.15"/>
+    </linearGradient>
+    <clipPath id="lensClip">
+      <circle cx="512" cy="512" r="280"/>
+    </clipPath>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1024" height="1024" rx="220" ry="220" fill="url(#bgGrad)"/>
+
+  <!-- Outer lens ring -->
+  <circle cx="512" cy="512" r="320" fill="none" stroke="#4dabf7" stroke-width="6" opacity="0.25"/>
+
+  <!-- Middle lens ring -->
+  <circle cx="512" cy="512" r="290" fill="none" stroke="#4dabf7" stroke-width="3" opacity="0.15"/>
+
+  <!-- Lens body (dark) -->
+  <circle cx="512" cy="512" r="280" fill="#0d1117"/>
+
+  <!-- Subtle lens inner glow -->
+  <circle cx="512" cy="512" r="280" fill="none" stroke="#4dabf7" stroke-width="2" opacity="0.4"/>
+
+  <!-- Text lines inside the lens (clipped) -->
+  <g clip-path="url(#lensClip)">
+    <!-- Faded top line -->
+    <rect x="320" y="350" width="384" height="8" rx="4" fill="url(#lineGrad2)"/>
+
+    <!-- Dimmer line -->
+    <rect x="350" y="390" width="324" height="8" rx="4" fill="url(#lineGrad2)"/>
+
+    <!-- Active/bright lines in center -->
+    <rect x="300" y="440" width="424" height="10" rx="5" fill="url(#lineGrad1)"/>
+    <rect x="340" y="475" width="344" height="10" rx="5" fill="url(#lineGrad1)"/>
+    <rect x="310" y="510" width="404" height="10" rx="5" fill="url(#lineGrad1)"/>
+    <rect x="350" y="545" width="324" height="10" rx="5" fill="url(#lineGrad1)"/>
+
+    <!-- Dimmer lines below -->
+    <rect x="320" y="590" width="384" height="8" rx="4" fill="url(#lineGrad2)"/>
+    <rect x="360" y="630" width="304" height="8" rx="4" fill="url(#lineGrad2)"/>
+
+    <!-- Faded bottom line -->
+    <rect x="340" y="670" width="344" height="8" rx="4" fill="url(#lineGrad2)" opacity="0.5"/>
+  </g>
+
+  <!-- Down arrow/chevron indicating scroll -->
+  <path d="M 480 730 L 512 760 L 544 730" fill="none" stroke="#4dabf7" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+  <path d="M 480 755 L 512 785 L 544 755" fill="none" stroke="#4dabf7" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity="0.3"/>
+
+  <!-- Recording indicator dot (top right) -->
+  <circle cx="740" cy="284" r="20" fill="#ff4444"/>
+  <circle cx="740" cy="284" r="12" fill="#ff6666" opacity="0.8"/>
+  <circle cx="740" cy="284" r="6" fill="#ffffff" opacity="0.4"/>
+
+  <!-- Corner camera frame marks -->
+  <!-- Top left -->
+  <path d="M 160 280 L 160 220 Q 160 190 190 190 L 250 190" fill="none" stroke="#4dabf7" stroke-width="5" stroke-linecap="round" opacity="0.5"/>
+  <!-- Top right -->
+  <path d="M 774 190 L 834 190 Q 864 190 864 220 L 864 280" fill="none" stroke="#4dabf7" stroke-width="5" stroke-linecap="round" opacity="0.5"/>
+  <!-- Bottom left -->
+  <path d="M 160 744 L 160 804 Q 160 834 190 834 L 250 834" fill="none" stroke="#4dabf7" stroke-width="5" stroke-linecap="round" opacity="0.5"/>
+  <!-- Bottom right -->
+  <path d="M 774 834 L 834 834 Q 864 834 864 804 L 864 744" fill="none" stroke="#4dabf7" stroke-width="5" stroke-linecap="round" opacity="0.5"/>
+</svg>

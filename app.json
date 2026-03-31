@@ -1,0 +1,60 @@
+{
+  "expo": {
+    "name": "Teleprompter",
+    "slug": "teleprompter-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "newArchEnabled": true,
+    "scheme": "teleprompter",
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#000000"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "This app needs camera access to show the teleprompter overlay on your camera feed.",
+        "NSMicrophoneUsageDescription": "This app needs microphone access to record video with audio.",
+        "NSPhotoLibraryUsageDescription": "This app needs photo library access to save your recordings."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#000000"
+      },
+      "permissions": [
+        "CAMERA",
+        "RECORD_AUDIO",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow Teleprompter to access your camera for recording.",
+          "microphonePermission": "Allow Teleprompter to access your microphone for recording audio.",
+          "recordAudioAndroid": true
+        }
+      ],
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "Allow Teleprompter to save recordings to your photo library.",
+          "savePhotosPermission": "Allow Teleprompter to save recordings to your photo library.",
+          "isAccessMediaLocationEnabled": true
+        }
+      ],
+      "expo-video"
+    ]
+  }
+}
