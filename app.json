@@ -8,6 +8,12 @@
     "userInterfaceStyle": "dark",
     "newArchEnabled": true,
     "scheme": "teleprompter",
+    "updates": {
+      "url": "https://u.expo.dev/08feeef0-d4f6-4e6e-98d3-670d9b1a914a"
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
@@ -41,8 +47,7 @@
         "android.permission.READ_MEDIA_VISUAL_USER_SELECTED",
         "android.permission.ACCESS_MEDIA_LOCATION",
         "android.permission.READ_MEDIA_IMAGES",
-        "android.permission.READ_MEDIA_VIDEO",
-        "android.permission.READ_MEDIA_AUDIO"
+        "android.permission.READ_MEDIA_VIDEO"
       ]
     },
     "web": {
@@ -63,10 +68,15 @@
         {
           "photosPermission": "Allow Teleprompter to save recordings to your photo library.",
           "savePhotosPermission": "Allow Teleprompter to save recordings to your photo library.",
-          "isAccessMediaLocationEnabled": true
+          "isAccessMediaLocationEnabled": true,
+          "granularPermissions": [
+            "photo",
+            "video"
+          ]
         }
       ],
-      "expo-video"
+      "expo-video",
+      "expo-updates"
     ],
     "extra": {
       "router": {},

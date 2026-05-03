@@ -12,7 +12,9 @@
     "build:dev:android": "eas build --profile development --platform android",
     "build:preview": "eas build --profile preview --platform all",
     "build:prod": "eas build --profile production --platform all",
-    "submit": "eas submit --platform all"
+    "submit": "eas submit --platform all",
+    "update:preview": "eas update --branch preview --message",
+    "update:production": "eas update --branch production --message"
   },
   "dependencies": {
     "@expo/cli": "^55.0.19",
@@ -24,6 +26,7 @@
     "expo-media-library": "~18.2.1",
     "expo-router": "~6.0.23",
     "expo-status-bar": "~3.0.9",
+    "expo-updates": "~29.0.17",
     "expo-video": "~3.0.16",
     "react": "19.1.0",
     "react-dom": "19.1.0",

@@ -6,6 +6,7 @@ import {
   View,
   ScrollView,
   Alert,
+  Platform,
 } from "react-native";
 import {
   CameraView,
@@ -13,6 +14,7 @@ import {
   useMicrophonePermissions,
 } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
+import Constants from "expo-constants";
 import { useRouter } from "expo-router";
 import { useTeleprompter } from "../context/TeleprompterContext";
 import { Ionicons } from "@expo/vector-icons";
@@ -28,6 +30,10 @@ try {
 }
 
 const COUNTDOWN_OPTIONS = [0, 3, 5, 10];
+const MEDIA_LIBRARY_PERMISSIONS: MediaLibrary.GranularPermission[] = [
+  "photo",
+  "video",
+];
 
 export default function CameraScreen() {
   const router = useRouter();
@@ -44,8 +50,6 @@ export default function CameraScreen() {
 
   const [cameraPermission, requestCameraPermission] = useCameraPermissions();
   const [micPermission, requestMicPermission] = useMicrophonePermissions();
-  const [mediaPermission, requestMediaPermission] =
-    MediaLibrary.usePermissions();
   const [isRecording, setIsRecording] = useState(false);
   const [isScrolling, setIsScrolling] = useState(false);
   const [showControls, setShowControls] = useState(false);
@@ -66,6 +70,9 @@ export default function CameraScreen() {
   const isCountingDown = useRef(false);
   const triggerRecordRef = useRef<() => void>(() => {});
   const cancelCountdownRef = useRef<() => void>(() => {});
+  const isExpoGo =
+    Constants.executionEnvironment === "storeClient" ||
+    Constants.appOwnership === "expo";
 
   const previewPlayer = useVideoPlayer(previewUri, (player) => {
     player.loop = true;
@@ -101,7 +108,6 @@ export default function CameraScreen() {
     (async () => {
       if (!cameraPermission?.granted) await requestCameraPermission();
       if (!micPermission?.granted) await requestMicPermission();
-      if (!mediaPermission?.granted) await requestMediaPermission();
     })();
   }, []);
 
@@ -180,8 +186,20 @@ export default function CameraScreen() {
 
   const saveRecording = useCallback(async () => {
     if (!previewUri) return;
+
+    if (Platform.OS === "android" && isExpoGo) {
+      Alert.alert(
+        "Development Build Required",
+        "Saving to media library is limited in Expo Go on Android. Use an Android development build to save recordings."
+      );
+      return;
+    }
+
     try {
-      const { status } = await MediaLibrary.requestPermissionsAsync();
+      const { status } = await MediaLibrary.requestPermissionsAsync(
+        false,
+        MEDIA_LIBRARY_PERMISSIONS
+      );
       if (status === "granted") {
         await MediaLibrary.saveToLibraryAsync(previewUri);
         Alert.alert("Video Saved", "Your recording has been saved to your photo library.", [{ text: "OK" }]);
@@ -189,11 +207,23 @@ export default function CameraScreen() {
         Alert.alert("Permission Needed", "Media library access is required to save recordings.", [{ text: "OK" }]);
       }
     } catch (err) {
-      console.error("Save error:", err);
-      Alert.alert("Error", "Failed to save recording.");
+      const message = err instanceof Error ? err.message : String(err);
+
+      if (
+        message.includes("Expo Go can no longer provide full access") ||
+        message.includes("requested the AUDIO permission")
+      ) {
+        Alert.alert(
+          "Development Build Required",
+          "This permission flow is not fully supported in Expo Go on Android. Please run a development build to save recordings."
+        );
+      } else {
+        console.error("Save error:", err);
+        Alert.alert("Error", "Failed to save recording.");
+      }
     }
     setPreviewUri(null);
-  }, [previewUri]);
+  }, [previewUri, isExpoGo]);
 
   const discardRecording = useCallback(() => {
     setPreviewUri(null);
