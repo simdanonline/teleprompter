@@ -103,14 +103,6 @@ export default function CameraScreen() {
     };
   }, []);
 
-  // Request permissions on mount
-  useEffect(() => {
-    (async () => {
-      if (!cameraPermission?.granted) await requestCameraPermission();
-      if (!micPermission?.granted) await requestMicPermission();
-    })();
-  }, []);
-
   // Auto-scrolling logic
   useEffect(() => {
     if (isScrolling) {
@@ -338,15 +330,15 @@ export default function CameraScreen() {
   if (previewUri) {
     return (
       <View style={styles.container}>
-        <VideoView
-          player={previewPlayer}
-          style={StyleSheet.absoluteFill}
-          contentFit="cover"
-          nativeControls
-        />
         <View style={[styles.previewTopBar, { paddingTop: insets.top + 8 }]}>
           <Text style={styles.previewTitle}>Preview</Text>
         </View>
+        <VideoView
+          player={previewPlayer}
+          style={styles.previewVideo}
+          contentFit="contain"
+          nativeControls
+        />
         <View style={[styles.previewBottomBar, { paddingBottom: insets.bottom + 24 }]}>
           <TouchableOpacity style={styles.previewDiscardButton} onPress={discardRecording}>
             <Ionicons name="trash-outline" size={24} color="#fff" />
@@ -451,70 +443,6 @@ export default function CameraScreen() {
         </TouchableOpacity>
       </View>
 
-      {/* Controls panel */}
-      {showControls && (
-        <View style={[styles.controlsPanel, { bottom: 110 + insets.bottom }]}>
-          {/* Countdown timer */}
-          <View style={styles.controlRow}>
-            <Ionicons name="timer-outline" size={18} color="#aaa" />
-            <Text style={styles.controlLabel}>Timer</Text>
-            <View style={styles.timerOptions}>
-              {COUNTDOWN_OPTIONS.map((val) => (
-                <TouchableOpacity
-                  key={val}
-                  style={[
-                    styles.timerChip,
-                    countdownDelay === val && styles.timerChipActive,
-                  ]}
-                  onPress={() => setCountdownDelay(val)}
-                >
-                  <Text
-                    style={[
-                      styles.timerChipText,
-                      countdownDelay === val && styles.timerChipTextActive,
-                    ]}
-                  >
-                    {val === 0 ? "Off" : `${val}s`}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-          </View>
-          {/* Scroll speed */}
-          <ControlRow
-            icon="speedometer-outline"
-            label="Speed"
-            value={scrollSpeed}
-            min={10}
-            max={150}
-            step={10}
-            onChange={setScrollSpeed}
-          />
-          {/* Font size */}
-          <ControlRow
-            icon="text-outline"
-            label="Size"
-            value={fontSize}
-            min={16}
-            max={64}
-            step={4}
-            onChange={setFontSize}
-            displayValue={`${fontSize}px`}
-          />
-          {/* Overlay opacity */}
-          <ControlRow
-            icon="contrast-outline"
-            label="Opacity"
-            value={Math.round(overlayOpacity * 100)}
-            min={10}
-            max={90}
-            step={10}
-            onChange={(v) => setOverlayOpacity(v / 100)}
-            displayValue={`${Math.round(overlayOpacity * 100)}%`}
-          />
-        </View>
-      )}
-
       {/* Bottom controls */}
       <View style={[styles.bottomBar, { paddingBottom: insets.bottom + 16 }]}>
         {/* Reset scroll */}
@@ -560,6 +488,75 @@ export default function CameraScreen() {
           </Text>
         </TouchableOpacity>
       </View>
+
+      {/* Controls panel — rendered last so it sits above the bottom bar */}
+      {showControls && (
+        <View
+          style={[
+            styles.controlsPanel,
+            { bottom: 140 + insets.bottom },
+          ]}
+        >
+          {/* Countdown timer */}
+          <View style={styles.controlRow}>
+            <Ionicons name="timer-outline" size={18} color="#aaa" />
+            <Text style={styles.controlLabel}>Timer</Text>
+            <View style={styles.timerOptions}>
+              {COUNTDOWN_OPTIONS.map((val) => (
+                <TouchableOpacity
+                  key={val}
+                  style={[
+                    styles.timerChip,
+                    countdownDelay === val && styles.timerChipActive,
+                  ]}
+                  onPress={() => setCountdownDelay(val)}
+                >
+                  <Text
+                    style={[
+                      styles.timerChipText,
+                      countdownDelay === val && styles.timerChipTextActive,
+                    ]}
+                  >
+                    {val === 0 ? "Off" : `${val}s`}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+          {/* Scroll speed */}
+          <ControlRow
+            icon="speedometer-outline"
+            label="Speed"
+            value={scrollSpeed}
+            min={10}
+            max={150}
+            step={5}
+            onChange={setScrollSpeed}
+          />
+          {/* Font size */}
+          <ControlRow
+            icon="text-outline"
+            label="Size"
+            value={fontSize}
+            min={16}
+            max={64}
+            step={4}
+            onChange={setFontSize}
+            displayValue={`${fontSize}px`}
+          />
+          {/* Overlay opacity */}
+          <ControlRow
+            icon="contrast-outline"
+            label="Opacity"
+            value={Math.round(overlayOpacity * 100)}
+            min={10}
+            max={90}
+            step={10}
+            onChange={(v) => setOverlayOpacity(v / 100)}
+            displayValue={`${Math.round(overlayOpacity * 100)}%`}
+          />
+        </View>
+      )}
     </View>
   );
 }
@@ -732,10 +729,12 @@ const styles = StyleSheet.create({
     position: "absolute",
     left: 16,
     right: 16,
-    backgroundColor: "rgba(0,0,0,0.75)",
+    backgroundColor: "rgba(0,0,0,0.85)",
     borderRadius: 12,
     padding: 12,
     gap: 8,
+    zIndex: 10,
+    elevation: 10,
   },
   controlRow: {
     flexDirection: "row",
@@ -851,28 +850,26 @@ const styles = StyleSheet.create({
   },
   // Preview screen
   previewTopBar: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
     alignItems: "center",
     paddingHorizontal: 16,
+    paddingBottom: 12,
+    backgroundColor: "#000",
   },
   previewTitle: {
     color: "#fff",
     fontSize: 17,
     fontWeight: "600",
   },
+  previewVideo: {
+    flex: 1,
+    backgroundColor: "#000",
+  },
   previewBottomBar: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
     flexDirection: "row",
     justifyContent: "center",
     gap: 24,
     paddingTop: 20,
-    backgroundColor: "rgba(0,0,0,0.5)",
+    backgroundColor: "#000",
   },
   previewDiscardButton: {
     flexDirection: "row",

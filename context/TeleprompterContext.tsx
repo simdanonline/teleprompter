@@ -9,6 +9,8 @@ interface TeleprompterState {
   setFontSize: (size: number) => void;
   overlayOpacity: number;
   setOverlayOpacity: (opacity: number) => void;
+  currentScriptId: string | null;
+  setCurrentScriptId: (id: string | null) => void;
 }
 
 const TeleprompterContext = createContext<TeleprompterState | null>(null);
@@ -22,6 +24,7 @@ export function TeleprompterProvider({
   const [scrollSpeed, setScrollSpeed] = useState(50);
   const [fontSize, setFontSize] = useState(32);
   const [overlayOpacity, setOverlayOpacity] = useState(0.5);
+  const [currentScriptId, setCurrentScriptId] = useState<string | null>(null);
 
   return (
     <TeleprompterContext.Provider
@@ -34,6 +37,8 @@ export function TeleprompterProvider({
         setFontSize,
         overlayOpacity,
         setOverlayOpacity,
+        currentScriptId,
+        setCurrentScriptId,
       }}
     >
       {children}
